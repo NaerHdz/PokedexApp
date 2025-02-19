@@ -11,18 +11,22 @@ export default function HomeScreen() {
   const [results, setResults] = useState<Array<Result>>([] as Result[]);
   const [searchQuery, setSearchQuery] = useState('');
 
-  function fetchPokemons(url: string) {
+  function fetchNextPrevPokemons(url: string) {
     axios.get(url).then(response => {
       setRoot(response.data);
       setResults(response.data.results);
     });
   }
 
-  useEffect(() => {
-    axios.get(API_POKEMON).then(response => {
+  function fetchPokemon(pokemonName: string) {
+    axios.get(`${API_POKEMON}/${pokemonName}`).then(response => {
       setRoot(response.data);
       setResults(response.data.results);
     });
+  }
+
+  useEffect(() => {
+    fetchPokemon('');
   }, []);
 
   return (
@@ -38,14 +42,14 @@ export default function HomeScreen() {
           style={styles.btn}
           mode="outlined"
           disabled={!root.previous}
-          onPress={() => fetchPokemons(root.previous)}>
+          onPress={() => fetchNextPrevPokemons(root.previous)}>
           Previous
         </Button>
         <Button
           style={styles.btn}
           disabled={!root.next}
           mode="outlined"
-          onPress={() => fetchPokemons(root.next)}>
+          onPress={() => fetchNextPrevPokemons(root.next)}>
           Next
         </Button>
       </View>

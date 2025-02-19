@@ -1,11 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import axios from 'axios';
 import {TouchableOpacity, Text, Image, View, StyleSheet} from 'react-native';
-import {Pokemon, Result} from '../../../types';
+import {useNavigation} from '@react-navigation/native';
+
+import axios from 'axios';
 import COLORS from '../../../constants/colors';
+import {Pokemon, Result} from '../../../types';
+import Animated from 'react-native-reanimated';
 export default function CardPokemonComponent(props: Result) {
   const [pokemon, setPokemon] = useState<Pokemon>({} as Pokemon);
   const [color, setColor] = useState<string>('');
+  const navigation = useNavigation();
 
   useEffect(() => {
     axios.get(props.url).then(response => {
@@ -15,7 +19,10 @@ export default function CardPokemonComponent(props: Result) {
   }, []);
 
   return (
-    <TouchableOpacity>
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate('Details' as never);
+      }}>
       {pokemon && (
         <View style={[styles.container, {backgroundColor: color}]}>
           <Image
