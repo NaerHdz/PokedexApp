@@ -46,6 +46,9 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 20,
+    textShadowColor: 'rgba(255, 255, 255,1)',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 10,
     textTransform: 'capitalize',
   },
 });

@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
+import {FlatList, SafeAreaView, StyleSheet, View} from 'react-native';
 import {Root, Result} from '../../types';
 import axios from 'axios';
 import CardPokemonComponent from './components/CardPokemonComponent';
@@ -26,7 +26,7 @@ export default function HomeScreen() {
   }, []);
 
   return (
-    <View>
+    <SafeAreaView style={{height: '95%'}}>
       <Searchbar
         style={styles.searchbar}
         onChangeText={setSearchQuery}
@@ -37,11 +37,13 @@ export default function HomeScreen() {
         <Button
           style={styles.btn}
           mode="outlined"
+          disabled={!root.previous}
           onPress={() => fetchPokemons(root.previous)}>
           Previous
         </Button>
         <Button
           style={styles.btn}
+          disabled={!root.next}
           mode="outlined"
           onPress={() => fetchPokemons(root.next)}>
           Next
@@ -55,7 +57,7 @@ export default function HomeScreen() {
           <CardPokemonComponent name={item.name} url={item.url} />
         )}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
