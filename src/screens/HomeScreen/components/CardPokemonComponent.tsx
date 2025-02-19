@@ -5,7 +5,7 @@ import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import COLORS from '../../../constants/colors';
 import {Pokemon, Result} from '../../../types';
-import Animated from 'react-native-reanimated';
+
 export default function CardPokemonComponent(props: Result) {
   const [pokemon, setPokemon] = useState<Pokemon>({} as Pokemon);
   const [color, setColor] = useState<string>('');

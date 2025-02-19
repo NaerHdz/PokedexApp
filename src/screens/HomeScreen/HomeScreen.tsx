@@ -18,16 +18,21 @@ export default function HomeScreen() {
     });
   }
 
-  function fetchPokemon(pokemonName: string) {
-    axios.get(`${API_POKEMON}/${pokemonName}`).then(response => {
-      setRoot(response.data);
-      setResults(response.data.results);
-    });
+  function fetchAllPokemons() {
+    axios
+      .get(`${API_POKEMON}`)
+      .then(response => {
+        setRoot(response.data);
+        setResults(response.data.results);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   useEffect(() => {
-    fetchPokemon('');
-  }, []);
+    fetchAllPokemons();
+  }, [searchQuery]);
 
   return (
     <SafeAreaView style={{height: '95%'}}>

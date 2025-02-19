@@ -1,19 +1,23 @@
 import React from 'react';
-import {Image, Text, View} from 'react-native';
-import Animated from 'react-native-reanimated';
-import {Pokemon} from '../../types';
+import {Image, StyleSheet, Text, View} from 'react-native';
+import Animated, {BounceIn, BounceOut} from 'react-native-reanimated';
+import colors from '../../constants/colors';
 
-export default function DetailsScreen(props: Pokemon) {
+export default function DetailsScreen(): React.JSX.Element {
   return (
     <View>
-      <Animated.Image
-        source={{
-          uri: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/133.png',
-        }}
-        style={{width: 150, height: 150}}
-        sharedTransitionTag="tag"
-      />
-      <Text>Eevee</Text>
+      <View>
+        <Animated.Image
+          entering={BounceIn.duration(1000)}
+          source={{
+            uri: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',
+          }}
+          style={{width: 300, height: 250}}
+        />
+      </View>
+      <Text>Bulbausar</Text>
     </View>
   );
 }
+
+const styles = StyleSheet.create({});
