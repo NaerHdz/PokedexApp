@@ -1,24 +1,76 @@
 import {useState, useEffect} from 'react';
-import {Button, Text, View} from 'react-native';
-import Animated, {useSharedValue, withSpring} from 'react-native-reanimated';
-import {Pokemon, Result, Root} from '../../types';
+import {FlatList, StyleSheet, View} from 'react-native';
+import {Root, Result} from '../../types';
+import axios from 'axios';
+import CardPokemonComponent from './components/CardPokemonComponent';
+import {API_POKEMON} from '../../constants/urls';
+import {Button, Searchbar} from 'react-native-paper';
 
 export default function HomeScreen() {
   const [root, setRoot] = useState<Root>({} as Root);
   const [results, setResults] = useState<Array<Result>>([] as Result[]);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  function fetchPokemons(url: string) {
+    axios.get(url).then(response => {
+      setRoot(response.data);
+      setResults(response.data.results);
+    });
+  }
 
   useEffect(() => {
-    fetch('https://pokeapi.co/api/v2/pokemon')
-      .then(response => response.json())
-      .then(json => {
-        setRoot(json);
-        setResults(json.results);
-      });
+    axios.get(API_POKEMON).then(response => {
+      setRoot(response.data);
+      setResults(response.data.results);
+    });
   }, []);
 
   return (
-    <View style={{flex: 1, alignItems: 'center'}}>
-      {results && <Text>{results[0].name}</Text>}
+    <View>
+      <Searchbar
+        style={styles.searchbar}
+        onChangeText={setSearchQuery}
+        value={searchQuery}
+        placeholder="Search"
+      />
+      <View style={styles.btnContainer}>
+        <Button
+          style={styles.btn}
+          mode="outlined"
+          onPress={() => fetchPokemons(root.previous)}>
+          Previous
+        </Button>
+        <Button
+          style={styles.btn}
+          mode="outlined"
+          onPress={() => fetchPokemons(root.next)}>
+          Next
+        </Button>
+      </View>
+      <FlatList
+        data={results}
+        keyExtractor={item => item.name}
+        numColumns={2}
+        renderItem={({item}) => (
+          <CardPokemonComponent name={item.name} url={item.url} />
+        )}
+      />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  searchbar: {
+    width: '95%',
+    margin: 10,
+    backgroundColor: '#fff',
+  },
+  btnContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 20,
+  },
+  btn: {
+    width: 180,
+  },
+});
