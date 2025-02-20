@@ -2,8 +2,10 @@ import React from 'react';
 import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import Animated, {BounceIn, BounceOut} from 'react-native-reanimated';
 import colors from '../../constants/colors';
+import {Props} from '../../types/params';
 
-export default function DetailsScreen(): React.JSX.Element {
+export default function DetailsScreen({route}: Props): React.JSX.Element {
+  console.log('DetailsScreen', route.params);
   return (
     <SafeAreaView>
       <View style={{backgroundColor: colors.grass, height: 230}}>
@@ -37,7 +39,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   containterType: {
-    marginTop: 100,
+    marginTop: 80,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
   },
