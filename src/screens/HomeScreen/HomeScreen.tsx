@@ -35,7 +35,7 @@ export default function HomeScreen() {
   }, [searchQuery]);
 
   return (
-    <SafeAreaView style={{height: '95%'}}>
+    <SafeAreaView style={{flex: 1}}>
       <Searchbar
         style={styles.searchbar}
         onChangeText={setSearchQuery}

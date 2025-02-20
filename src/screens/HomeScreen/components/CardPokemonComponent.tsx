@@ -7,6 +7,7 @@ import COLORS from '../../../constants/colors';
 import {Pokemon, Result} from '../../../types';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../../../types/params';
+import Animated from 'react-native-reanimated';
 
 export default function CardPokemonComponent(props: Result) {
   const [pokemon, setPokemon] = useState<Pokemon>({} as Pokemon);
@@ -28,7 +29,7 @@ export default function CardPokemonComponent(props: Result) {
       }}>
       {pokemon && (
         <View style={[styles.container, {backgroundColor: color}]}>
-          <Image
+          <Animated.Image
             style={{width: 120, height: 100}}
             source={{
               uri: pokemon.sprites?.front_default,

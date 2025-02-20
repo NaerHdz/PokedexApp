@@ -7,11 +7,10 @@ import TypeComponent from './components/TypeComponent';
 import {Ability} from '../../types';
 
 export default function DetailsScreen({route}: Props): React.JSX.Element {
-  console.log('DetailsScreen', route.params);
   const {Pokemon} = route.params;
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#000'}}>
       <View
         style={{
           backgroundColor:
@@ -29,23 +28,23 @@ export default function DetailsScreen({route}: Props): React.JSX.Element {
           style={{width: '65%', height: 230, alignSelf: 'center'}}
         />
       </View>
-      <View style={styles.container}>
+      <View style={[styles.container, {justifyContent: 'space-evenly'}]}>
         {Pokemon.types.map((type: any, index: number) => (
           <TypeComponent type={type.type.name} key={index} />
         ))}
       </View>
 
       <View style={styles.container}>
-        <Text style={{fontSize: 25}}>Abilities</Text>
+        <Text style={styles.text}>Abilities</Text>
         {Pokemon.abilities.map((ability: Ability, index: number) => (
-          <Text style={{fontSize: 25}} key={index}>
+          <Text style={styles.text} key={index}>
             {ability.ability.name}
           </Text>
         ))}
       </View>
       <View style={[styles.container, {marginTop: 20, marginBottom: -10}]}>
-        <Text style={{fontSize: 25}}>weight</Text>
-        <Text style={{fontSize: 25}}>{Pokemon.weight}</Text>
+        <Text style={styles.text}>weight</Text>
+        <Text style={styles.text}>{Pokemon.weight}</Text>
       </View>
       <View
         style={{
@@ -54,8 +53,8 @@ export default function DetailsScreen({route}: Props): React.JSX.Element {
         }}>
         {Pokemon.stats.map((stat: any, index: number) => (
           <View key={index} style={styles.container}>
-            <Text style={{fontSize: 25}}>{stat.stat.name}</Text>
-            <Text style={{fontSize: 25}}>{stat.base_stat}</Text>
+            <Text style={styles.text}>{stat.stat.name}</Text>
+            <Text style={styles.text}>{stat.base_stat}</Text>
           </View>
         ))}
       </View>
@@ -80,5 +79,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 40,
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  text: {
+    fontSize: 24,
+    color: '#fff',
+    textTransform: 'capitalize',
   },
 });
