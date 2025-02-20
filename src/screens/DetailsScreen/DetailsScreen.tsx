@@ -1,30 +1,80 @@
 import React from 'react';
-import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import Animated, {BounceIn, BounceOut} from 'react-native-reanimated';
-import colors from '../../constants/colors';
+import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import Animated, {BounceIn} from 'react-native-reanimated';
+import COLORS from '../../constants/colors';
 import {Props} from '../../types/params';
+import TypeComponent from './components/TypeComponent';
+import {Ability} from '../../types';
 
 export default function DetailsScreen({route}: Props): React.JSX.Element {
   console.log('DetailsScreen', route.params);
+  const {Pokemon} = route.params;
+
   return (
     <SafeAreaView>
-      <View style={{backgroundColor: colors.grass, height: 230}}>
-        <Text style={styles.h1}>Bulbasaur</Text>
+      <View
+        style={{
+          backgroundColor:
+            COLORS[Pokemon.types[0].type.name as keyof typeof COLORS],
+          height: 330,
+        }}>
+        <Text style={styles.h1}>{Pokemon.name}</Text>
         <Animated.Image
           entering={BounceIn.duration(1000)}
           source={{
-            uri: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',
+            uri: Pokemon.sprites?.front_default,
           }}
-          style={{width: 400, height: 280, alignSelf: 'center'}}
+          style={{width: '65%', height: 230, alignSelf: 'center'}}
         />
       </View>
       <View style={styles.containterType}>
-        <Text style={[styles.type, {backgroundColor: colors.grass}]}>
-          Grass
-        </Text>
-        <Text style={[styles.type, {backgroundColor: colors.poison}]}>
-          Poison
-        </Text>
+        <TypeComponent type={Pokemon.types[0].type.name} />
+
+        {Pokemon.types.length === 2 && (
+          <TypeComponent type={Pokemon.types[1].type.name} />
+        )}
+      </View>
+
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-evenly',
+          marginVertical: 30,
+        }}>
+        <Text style={{fontSize: 25}}>Abilities</Text>
+        {Pokemon.abilities.map((ability: Ability, index: number) => (
+          <Text style={{fontSize: 25}} key={index}>
+            {ability.ability.name}
+          </Text>
+        ))}
+      </View>
+      <View
+        style={{
+          alignContent: 'flex-start',
+          marginHorizontal: 40,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
+        <Text style={{fontSize: 25}}>weight</Text>
+        <Text style={{fontSize: 25}}>{Pokemon.weight}</Text>
+      </View>
+      <View
+        style={{
+          alignContent: 'flex-start',
+          marginTop: 30,
+        }}>
+        {Pokemon.stats.map((stat: any, index: number) => (
+          <View
+            key={index}
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginHorizontal: 40,
+            }}>
+            <Text style={{fontSize: 25}}>{stat.stat.name}</Text>
+            <Text style={{fontSize: 25}}>{stat.base_stat}</Text>
+          </View>
+        ))}
       </View>
     </SafeAreaView>
   );
@@ -37,21 +87,11 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginLeft: 30,
     marginVertical: 10,
+    textTransform: 'capitalize',
   },
   containterType: {
-    marginTop: 80,
+    marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-  },
-  type: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    width: 150,
-    padding: 10,
-    borderRadius: 20,
-    textAlign: 'center',
-    textShadowColor: 'rgba(255, 255, 255,1)',
-    textShadowOffset: {width: -1, height: 1},
-    textShadowRadius: 10,
   },
 });
