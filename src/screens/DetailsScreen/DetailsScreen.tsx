@@ -17,6 +17,8 @@ export default function DetailsScreen({route}: Props): React.JSX.Element {
           backgroundColor:
             COLORS[Pokemon.types[0].type.name as keyof typeof COLORS],
           height: 330,
+          borderBottomLeftRadius: 30,
+          borderBottomRightRadius: 30,
         }}>
         <Text style={styles.h1}>{Pokemon.name}</Text>
         <Animated.Image
@@ -27,20 +29,13 @@ export default function DetailsScreen({route}: Props): React.JSX.Element {
           style={{width: '65%', height: 230, alignSelf: 'center'}}
         />
       </View>
-      <View style={styles.containterType}>
-        <TypeComponent type={Pokemon.types[0].type.name} />
-
-        {Pokemon.types.length === 2 && (
-          <TypeComponent type={Pokemon.types[1].type.name} />
-        )}
+      <View style={styles.container}>
+        {Pokemon.types.map((type: any, index: number) => (
+          <TypeComponent type={type.type.name} key={index} />
+        ))}
       </View>
 
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-evenly',
-          marginVertical: 30,
-        }}>
+      <View style={styles.container}>
         <Text style={{fontSize: 25}}>Abilities</Text>
         {Pokemon.abilities.map((ability: Ability, index: number) => (
           <Text style={{fontSize: 25}} key={index}>
@@ -48,13 +43,7 @@ export default function DetailsScreen({route}: Props): React.JSX.Element {
           </Text>
         ))}
       </View>
-      <View
-        style={{
-          alignContent: 'flex-start',
-          marginHorizontal: 40,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-        }}>
+      <View style={[styles.container, {marginTop: 20, marginBottom: -10}]}>
         <Text style={{fontSize: 25}}>weight</Text>
         <Text style={{fontSize: 25}}>{Pokemon.weight}</Text>
       </View>
@@ -64,13 +53,7 @@ export default function DetailsScreen({route}: Props): React.JSX.Element {
           marginTop: 30,
         }}>
         {Pokemon.stats.map((stat: any, index: number) => (
-          <View
-            key={index}
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginHorizontal: 40,
-            }}>
+          <View key={index} style={styles.container}>
             <Text style={{fontSize: 25}}>{stat.stat.name}</Text>
             <Text style={{fontSize: 25}}>{stat.base_stat}</Text>
           </View>
@@ -88,10 +71,14 @@ const styles = StyleSheet.create({
     marginLeft: 30,
     marginVertical: 10,
     textTransform: 'capitalize',
+    textShadowColor: 'rgba(255, 255, 255,1)',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 10,
   },
-  containterType: {
+  container: {
     marginTop: 10,
+    marginHorizontal: 40,
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
   },
 });
