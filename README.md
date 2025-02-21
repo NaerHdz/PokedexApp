@@ -4,6 +4,7 @@
 >
 > Aqui se muestra el listado de los pokemon con una barra de busqueda, al igual que dos botones, next y prev, para cambiar los pokemones listados. <br/>
 > Al dar click en un pokémon te dará los detalles de este mismo.
+>
 > <img src="imgApp/home.png" alt="drawing" style="width:200px;"/>
 
 > # Usando la barra de búsqueda
