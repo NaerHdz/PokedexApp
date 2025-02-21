@@ -33,6 +33,7 @@ export default function HomeScreen() {
   }
 
   function fetchAllPokemons(url?: string) {
+    setType('');
     axios
       .get(`${API_POKEMON}/${url || ''}`)
       .then(response => {

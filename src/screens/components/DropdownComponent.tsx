@@ -63,8 +63,8 @@ export default function DropdownComponent(props: {
         onBlur={() => setIsFocus(false)}
         onChange={item => {
           setValue(item.value);
-          props.setType(item.value);
           setIsFocus(false);
+          props.setType(item.value);
         }}
       />
     </View>
