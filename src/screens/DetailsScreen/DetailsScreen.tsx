@@ -5,12 +5,22 @@ import COLORS from '../../constants/colors';
 import {Props} from '../../types/params';
 import TypeComponent from './components/TypeComponent';
 import {Ability} from '../../types';
+import Icon from '@react-native-vector-icons/fontawesome6';
+
+const icons: Record<string, string> = {
+  attack: 'dumbbell',
+  defense: 'shield',
+  hp: 'heart',
+  'special-attack': 'fire',
+  'special-defense': 'shield',
+  speed: 'wind',
+};
 
 export default function DetailsScreen({route}: Props): React.JSX.Element {
   const {Pokemon} = route.params;
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#000'}}>
+    <SafeAreaView style={{flex: 1}}>
       <View
         style={{
           backgroundColor:
@@ -44,7 +54,15 @@ export default function DetailsScreen({route}: Props): React.JSX.Element {
       </View>
       <View style={[styles.container, {marginTop: 20, marginBottom: -10}]}>
         <Text style={styles.text}>weight</Text>
-        <Text style={styles.text}>{Pokemon.weight}</Text>
+        <Text style={styles.text}>
+          <Icon
+            name="weight-hanging"
+            style={{paddingRight: 15}}
+            size={20}
+            iconStyle="solid"
+          />
+          {' ' + Pokemon.weight}
+        </Text>
       </View>
       <View
         style={{
@@ -54,7 +72,15 @@ export default function DetailsScreen({route}: Props): React.JSX.Element {
         {Pokemon.stats.map((stat: any, index: number) => (
           <View key={index} style={styles.container}>
             <Text style={styles.text}>{stat.stat.name}</Text>
-            <Text style={styles.text}>{stat.base_stat}</Text>
+            <Text style={styles.text}>
+              <Icon
+                name={icons[stat.stat.name] as any}
+                style={{paddingRight: 15}}
+                size={20}
+                iconStyle="solid"
+              />
+              {' ' + stat.base_stat}
+            </Text>
           </View>
         ))}
       </View>
@@ -82,7 +108,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 24,
-    color: '#fff',
     textTransform: 'capitalize',
   },
 });
