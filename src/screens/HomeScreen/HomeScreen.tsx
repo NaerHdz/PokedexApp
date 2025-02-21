@@ -1,15 +1,17 @@
 import {useState, useEffect} from 'react';
-import {FlatList, SafeAreaView, StyleSheet, View} from 'react-native';
+import {FlatList, SafeAreaView, StyleSheet, View, Alert} from 'react-native';
 import {Root, Result, Pokemon} from '../../types';
 import axios from 'axios';
 import CardPokemonComponent from './components/CardPokemonComponent';
-import {API_POKEMON} from '../../constants/urls';
+import {API_POKEMON, API_POKEMON_TYPE} from '../../constants/urls';
 import {Button, Searchbar} from 'react-native-paper';
+import DropdownComponent from '../components/DropdownComponent';
 
 export default function HomeScreen() {
   const [root, setRoot] = useState<Root>({} as Root);
   const [results, setResults] = useState<Array<Result>>([] as Result[]);
   const [pokemons, setPokemons] = useState<Pokemon>({} as Pokemon);
+  const [type, setType] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   function fetchNextPrevPokemons(url: string) {
@@ -17,6 +19,17 @@ export default function HomeScreen() {
       setRoot(response.data);
       setResults(response.data.results);
     });
+  }
+
+  function getPokemonsByType(type: string) {
+    axios
+      .get(`${API_POKEMON_TYPE}/${type}/`)
+      .then(response => {
+        setResults(response.data.pokemon.map((item: any) => item.pokemon));
+      })
+      .catch(error => {
+        Alert.alert('Error get pokemons by types', error.message);
+      });
   }
 
   function fetchAllPokemons(url?: string) {
@@ -33,9 +46,15 @@ export default function HomeScreen() {
         setResults(response.data.results);
       })
       .catch(error => {
-        console.log(error);
+        // console.log(error);
       });
   }
+
+  useEffect(() => {
+    if (type) {
+      getPokemonsByType(type);
+    }
+  }, [type]);
 
   useEffect(() => {
     fetchAllPokemons();
@@ -52,6 +71,7 @@ export default function HomeScreen() {
         value={searchQuery}
         placeholder="Search"
       />
+      <DropdownComponent setType={setType} />
       <View style={styles.btnContainer}>
         <Button
           style={styles.btn}

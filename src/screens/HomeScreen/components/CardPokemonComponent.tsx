@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {TouchableOpacity, Text, Image, View, StyleSheet} from 'react-native';
+import {
+  TouchableOpacity,
+  Text,
+  Image,
+  View,
+  StyleSheet,
+  Alert,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
 import axios from 'axios';
@@ -16,10 +23,17 @@ export default function CardPokemonComponent(props: Result) {
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   useEffect(() => {
-    axios.get(props.url).then(response => {
-      setPokemon(response.data);
-      setColor(COLORS[response.data.types[0].type.name as keyof typeof COLORS]);
-    });
+    axios
+      .get(props.url)
+      .then(response => {
+        setPokemon(response.data);
+        setColor(
+          COLORS[response.data.types[0].type.name as keyof typeof COLORS],
+        );
+      })
+      .catch(error => {
+        Alert.alert('Error get pokemon', error.message);
+      });
   }, []);
 
   return (
