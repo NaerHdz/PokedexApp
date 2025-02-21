@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import {FlatList, SafeAreaView, StyleSheet, View} from 'react-native';
-import {Root, Result} from '../../types';
+import {Root, Result, Pokemon} from '../../types';
 import axios from 'axios';
 import CardPokemonComponent from './components/CardPokemonComponent';
 import {API_POKEMON} from '../../constants/urls';
@@ -9,7 +9,8 @@ import {Button, Searchbar} from 'react-native-paper';
 export default function HomeScreen() {
   const [root, setRoot] = useState<Root>({} as Root);
   const [results, setResults] = useState<Array<Result>>([] as Result[]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [pokemons, setPokemons] = useState<Pokemon>({} as Pokemon);
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   function fetchNextPrevPokemons(url: string) {
     axios.get(url).then(response => {
@@ -18,10 +19,16 @@ export default function HomeScreen() {
     });
   }
 
-  function fetchAllPokemons() {
+  function fetchAllPokemons(url?: string) {
     axios
-      .get(`${API_POKEMON}`)
+      .get(`${API_POKEMON}/${url || ''}`)
       .then(response => {
+        if (url) {
+          setPokemons(response.data);
+          setRoot({} as Root);
+          setResults([] as Result[]);
+          return;
+        }
         setRoot(response.data);
         setResults(response.data.results);
       })
@@ -38,7 +45,10 @@ export default function HomeScreen() {
     <SafeAreaView style={{flex: 1}}>
       <Searchbar
         style={styles.searchbar}
-        onChangeText={setSearchQuery}
+        onChangeText={text => {
+          setSearchQuery(text);
+          fetchAllPokemons(text);
+        }}
         value={searchQuery}
         placeholder="Search"
       />
@@ -58,14 +68,29 @@ export default function HomeScreen() {
           Next
         </Button>
       </View>
-      <FlatList
-        data={results}
-        keyExtractor={item => item.name}
-        numColumns={2}
-        renderItem={({item}) => (
-          <CardPokemonComponent name={item.name} url={item.url} />
-        )}
-      />
+      {results.length > 0 && (
+        <FlatList
+          data={results}
+          keyExtractor={item => item.name}
+          numColumns={2}
+          renderItem={({item}) => (
+            <CardPokemonComponent name={item.name} url={item.url} />
+          )}
+        />
+      )}
+      {Boolean(pokemons.id) && (
+        <FlatList
+          data={[pokemons]}
+          keyExtractor={item => item.name}
+          numColumns={1}
+          renderItem={({item}) => (
+            <CardPokemonComponent
+              name={item.name}
+              url={`${API_POKEMON}/${item.name}`}
+            />
+          )}
+        />
+      )}
     </SafeAreaView>
   );
 }
