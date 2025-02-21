@@ -68,7 +68,7 @@ export default function HomeScreen() {
           Next
         </Button>
       </View>
-      {results.length > 0 && (
+      {results.length > 0 && !searchQuery && (
         <FlatList
           data={results}
           keyExtractor={item => item.name}
@@ -78,7 +78,7 @@ export default function HomeScreen() {
           )}
         />
       )}
-      {Boolean(pokemons.id) && (
+      {Boolean(pokemons.id) && searchQuery && (
         <FlatList
           data={[pokemons]}
           keyExtractor={item => item.name}

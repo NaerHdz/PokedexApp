@@ -55,13 +55,13 @@ export default function DetailsScreen({route}: Props): React.JSX.Element {
       <View style={[styles.container, {marginTop: 20, marginBottom: -10}]}>
         <Text style={styles.text}>weight</Text>
         <Text style={styles.text}>
+          {Pokemon.weight + ' '}
           <Icon
             name="weight-hanging"
             style={{paddingRight: 15}}
             size={20}
             iconStyle="solid"
           />
-          {' ' + Pokemon.weight}
         </Text>
       </View>
       <View
@@ -73,13 +73,13 @@ export default function DetailsScreen({route}: Props): React.JSX.Element {
           <View key={index} style={styles.container}>
             <Text style={styles.text}>{stat.stat.name}</Text>
             <Text style={styles.text}>
+              {stat.base_stat + ' '}
               <Icon
                 name={icons[stat.stat.name] as any}
                 style={{paddingRight: 15}}
                 size={20}
                 iconStyle="solid"
               />
-              {' ' + stat.base_stat}
             </Text>
           </View>
         ))}
