@@ -62,7 +62,7 @@ export default function HomeScreen() {
   }, [searchQuery]);
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
       <Searchbar
         style={styles.searchbar}
         onChangeText={text => {
@@ -121,6 +121,8 @@ const styles = StyleSheet.create({
     width: '95%',
     margin: 10,
     backgroundColor: '#fff',
+    borderColor: '#000',
+    borderWidth: 1,
   },
   btnContainer: {
     flexDirection: 'row',
